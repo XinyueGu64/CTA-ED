@@ -82,15 +82,16 @@ The neural network approach is considerably more involved, and the figure below 
 
 ## Now with the Royals
 This is text data from the Court circular (Pagnini). This original data has been collected by Marta Pagnini, who is a researcher at the London School of Economics. Each line is a paragraph in an issue of the Court Circular. The Court Circular is the official agenda of activities for the Royal family paper. It has been published every single day since the 19th century, giving  information on what the Royals are doing and who they are meeting with.
-```{r, eval=F}
+```{r}
 court_circular <- read.csv2("data/wordembed/Court_Circular_1000_random_sample.csv", sep = ",")
 head(court_circular)
 ```
 
 
-```{r}
+```{r, eval=F}
 # If you're working on your own computer, you can download the data directly from the course website repository
 court_circular <- read.csv2(gzcon(url("https://github.com/marionlieutaud/CTA-ED/blob/main/data/wordembed/Court_Circular_1000_random_sample.csv?raw=true")), sep=",")
+# There is a problem there
 ```
 
 ## Word vectors via SVD
@@ -113,7 +114,7 @@ After this, we make a unique ID for the particular ngram we create for each post
 
 You can see the resulting output below.
 
-```{r, eval = F}
+```{r}
 
 names(court_circular)
 
