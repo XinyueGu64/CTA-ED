@@ -78,3 +78,17 @@ The neural network approach is considerably more involved, and the figure below 
 <center>
 <img src="data/wordembed/skip_gram_mikolov.png" >
 </center>
+
+
+## Now with the Royals
+Data from the Court circular (Pagnini)
+```{r, eval=F}
+court_circular <- read.csv2("data/wordembed/Court_Circular_1000_random_sample.csv", sep = ",")
+```
+
+
+```{r}
+# If you're working on your own computer, you can download the data directly from the course website repository
+court_circular <- read.csv2(gzcon(url("https://github.com/marionlieutaud/CTA-ED/blob/main/data/wordembed/Court_Circular_1000_random_sample.csv?raw=true")), sep=",")
+```
+
