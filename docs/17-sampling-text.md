@@ -45,43 +45,43 @@ dataset$files[c("filename", "contentType")]
 
 ```
 ##                  filename
-## 1       emotive_cloud.tab
-## 2       neutral_cloud.tab
-## 3     neutral_ireland.tab
-## 4     emotive_ireland.tab
-## 5          neutral_uk.tab
-## 6          emotive_uk.tab
-## 7       commons_stats.tab
-## 8        ireland_data.csv
-## 9        3-word_clouds.py
-## 10             4-trends.R
-## 11          8-histogram.R
-## 12                1-uk.do
-## 13     6-barplot_topics.R
-## 14         7-plot_media.R
-## 15           2-ireland.do
-## 16 5-predictive_margins.R
-## 17            uk_data.csv
-## 18            README.docx
+## 1                 1-uk.do
+## 2            2-ireland.do
+## 3        3-word_clouds.py
+## 4              4-trends.R
+## 5  5-predictive_margins.R
+## 6      6-barplot_topics.R
+## 7          7-plot_media.R
+## 8           8-histogram.R
+## 9       commons_stats.tab
+## 10      emotive_cloud.tab
+## 11    emotive_ireland.tab
+## 12         emotive_uk.tab
+## 13       ireland_data.csv
+## 14      neutral_cloud.tab
+## 15    neutral_ireland.tab
+## 16         neutral_uk.tab
+## 17            README.docx
+## 18            uk_data.csv
 ##                                                                contentType
-## 1                                                text/tab-separated-values
-## 2                                                text/tab-separated-values
-## 3                                                text/tab-separated-values
-## 4                                                text/tab-separated-values
-## 5                                                text/tab-separated-values
-## 6                                                text/tab-separated-values
-## 7                                                text/tab-separated-values
-## 8                                                                 text/csv
-## 9                                                            text/x-python
-## 10                                                         type/x-r-syntax
-## 11                                                         type/x-r-syntax
-## 12                                              application/x-stata-syntax
-## 13                                                         type/x-r-syntax
-## 14                                                         type/x-r-syntax
-## 15                                              application/x-stata-syntax
-## 16                                                         type/x-r-syntax
-## 17                                                                text/csv
-## 18 application/vnd.openxmlformats-officedocument.wordprocessingml.document
+## 1                                               application/x-stata-syntax
+## 2                                               application/x-stata-syntax
+## 3                                                            text/x-python
+## 4                                                          type/x-r-syntax
+## 5                                                          type/x-r-syntax
+## 6                                                          type/x-r-syntax
+## 7                                                          type/x-r-syntax
+## 8                                                          type/x-r-syntax
+## 9                                                text/tab-separated-values
+## 10                                               text/tab-separated-values
+## 11                                               text/tab-separated-values
+## 12                                               text/tab-separated-values
+## 13                                                                text/csv
+## 14                                               text/tab-separated-values
+## 15                                               text/tab-separated-values
+## 16                                               text/tab-separated-values
+## 17 application/vnd.openxmlformats-officedocument.wordprocessingml.document
+## 18                                                                text/csv
 ```
 
 We choose to get the UK data from these files, which is listed under "UK_data.csv." We can then download this directly in the following way (this will take some time as the file size is >1GB).
@@ -104,7 +104,7 @@ search_results <- dataverse_search("corpus politics text", type = "dataset", per
 ```
 
 ```
-## 10 of 40787 results retrieved
+## 10 of 51820 results retrieved
 ```
 
 ``` r
@@ -112,28 +112,28 @@ search_results[,1:3]
 ```
 
 ```
-##                                                                                                  name
-## 1                                                                                                    
-## 2                             "A Deeper Look at Interstate War Data: Interstate War Data Version 1.1"
-## 3                                                            "Birth Legacies, State Making, and War."
-## 4                                "CBS Morning News" Shopping Habits and Lifestyles Poll, January 1989
-## 5                        "Common Sense" for Ontario: Defining the New Government's Mandate: June 1995
-## 6                                          "Cuadro histórico del General Santa Anna. 2a. parte," 1857
-## 7         "Don't Know" Means "Don't Know": DK Responses and the Public's Level of Political Knowledge
-## 8                   "El déspota Santa-Anna ante los veteranos de la Independencia," 1844 Diciembre 09
-## 9                    "European mood" bi-annual data, EU27 member states (1973-2014), Replication Data
-## 10 "Government Partisanship and Electoral Accountability" Political Research Quarterly 72(3): 727-743
+##                                                                                                                                        name
+## 1                                                                                                                                          
+## 2                                                                   "A Deeper Look at Interstate War Data: Interstate War Data Version 1.1"
+## 3                                                                                                  "Birth Legacies, State Making, and War."
+## 4                                                              "Common Sense" for Ontario: Defining the New Government's Mandate: June 1995
+## 5                                                                                "Cuadro histórico del General Santa Anna. 2a. parte," 1857
+## 6  "Determinants of Non-Partisan Ministerial Appointments in Presidential Systems: Evidence from the Presidential Polities of the Americas"
+## 7                                                                                                      "Do No Harm" Fieldwork data - Malawi
+## 8                                               "Don't Know" Means "Don't Know": DK Responses and the Public's Level of Political Knowledge
+## 9                                                         "El déspota Santa-Anna ante los veteranos de la Independencia," 1844 Diciembre 09
+## 10                                                         "European mood" bi-annual data, EU27 member states (1973-2014), Replication Data
 ##       type                                      url
 ## 1  dataset https://doi.org/10.6141/TW-SRDA-C00271-1
 ## 2  dataset       https://doi.org/10.7910/DVN/E2CEP5
 ## 3  dataset       https://doi.org/10.7910/DVN/EP7DXB
-## 4  dataset    https://doi.org/10.3886/ICPSR09230.v1
-## 5  dataset       https://doi.org/10.5683/SP2/OKNWMZ
-## 6  dataset       https://doi.org/10.18738/T8/Z0JH2C
-## 7  dataset       https://doi.org/10.7910/DVN/G9NOQO
-## 8  dataset       https://doi.org/10.18738/T8/U71QSD
-## 9  dataset       https://doi.org/10.7910/DVN/V42M9J
-## 10 dataset       https://doi.org/10.7910/DVN/5OG9VV
+## 4  dataset       https://doi.org/10.5683/SP2/OKNWMZ
+## 5  dataset       https://doi.org/10.18738/T8/Z0JH2C
+## 6  dataset       https://doi.org/10.7910/DVN/TSVHLZ
+## 7  dataset       https://doi.org/10.17026/SS/HU8ZNS
+## 8  dataset       https://doi.org/10.7910/DVN/G9NOQO
+## 9  dataset       https://doi.org/10.18738/T8/U71QSD
+## 10 dataset       https://doi.org/10.7910/DVN/V42M9J
 ```
 
 ### Curated corpora

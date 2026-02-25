@@ -7,8 +7,10 @@ First, we'll load the packages we'll be using in this week's brief demo. here we
 ```{r, warning = F, message = F}
 library(Matrix) #for handling matrices
 library(tidyverse)
+library(tidytext)
 library(irlba) # for SVD
 library(umap) # for dimensionality reduction
+library(quanteda)
 
 load("data/wordembed/pmi_svd.RData")
 load("data/wordembed/pmi_matrix.RData")
@@ -135,6 +137,9 @@ Well we can now calculate a set of probabilities from our skipgrams. We do so wi
 The probability we are then calculating is the number of times a word appears with another word denominated by the total number of word pairings across the whole corpus. 
 
 ```{r}
+#package
+library(widyr)
+
 #calculate probabilities
 skipgram_probs <- court_skipgrams %>%
     pairwise_count(word, skipgramID, diag = TRUE, sort = TRUE) %>% # diag = T means that we also count when the word appears twice within the window

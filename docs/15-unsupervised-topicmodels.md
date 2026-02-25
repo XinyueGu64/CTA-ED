@@ -370,7 +370,7 @@ tocq_chapters_gamma
 ##    document topic     gamma
 ##    <chr>    <int>     <dbl>
 ##  1 DiA2_76      1 0.551    
-##  2 DiA2_60      1 1.00     
+##  2 DiA2_60      1 1.000    
 ##  3 DiA1_52      1 0.0000464
 ##  4 DiA1_42      1 0.0000746
 ##  5 DiA1_11      1 0.0000382
@@ -500,8 +500,8 @@ print(names(documents[1:10]))
 ```
 
 ```
-##  [1] "text9405"  "text12427" "text19060" "text175"   "text13836" "text25838"
-##  [7] "text18397" "text12357" "text11181" "text27473"
+##  [1] "text22340" "text3714"  "text3539"  "text13546" "text22954" "text2763" 
+##  [7] "text22258" "text1568"  "text29216" "text21762"
 ```
 And now we are ready to preprocess in different ways. Here, we are including n-grams so we are preprocessing the text in 128 different ways. This takes about ten minutes to run on a machine with 8GB RAM. 
 

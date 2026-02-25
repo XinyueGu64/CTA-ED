@@ -6,23 +6,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 9 Week 5 Demo | Computational Text Analysis</title>
 <meta name="author" content="Marion Lieutaud">
-<meta name="description" content='9.1 Setup First, we’ll load the packages we’ll be using in this week’s brief demo. devtools::install_github("conjugateprior/austin") library(austin) library(quanteda) library(quanteda.textstats) ...'>
-<meta name="generator" content="bookdown 0.33 with bs4_book()">
+<meta name="description" content='9.1 Setup First, we’ll load the packages we’ll be using in this week’s brief demo. #devtools::install_github("conjugateprior/austin") library(austin) library(quanteda) library(quanteda.textstats) ...'>
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Chapter 9 Week 5 Demo | Computational Text Analysis">
 <meta property="og:type" content="book">
-<meta property="og:url" content="https://cjbarrie.github.io/CTA-ED/week-5-demo.html">
-<meta property="og:image" content="https://cjbarrie.github.io/CTA-ED/coverb.png">
-<meta property="og:description" content='9.1 Setup First, we’ll load the packages we’ll be using in this week’s brief demo. devtools::install_github("conjugateprior/austin") library(austin) library(quanteda) library(quanteda.textstats) ...'>
+<meta property="og:url" content="https://marionlieutaud.github.io/CTA-ED/week-5-demo.html">
+<meta property="og:image" content="https://marionlieutaud.github.io/CTA-ED/coverb.png">
+<meta property="og:description" content='9.1 Setup First, we’ll load the packages we’ll be using in this week’s brief demo. #devtools::install_github("conjugateprior/austin") library(austin) library(quanteda) library(quanteda.textstats) ...'>
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 9 Week 5 Demo | Computational Text Analysis">
-<meta name="twitter:description" content='9.1 Setup First, we’ll load the packages we’ll be using in this week’s brief demo. devtools::install_github("conjugateprior/austin") library(austin) library(quanteda) library(quanteda.textstats) ...'>
-<meta name="twitter:image" content="https://cjbarrie.github.io/CTA-ED/coverb.png">
+<meta name="twitter:description" content='9.1 Setup First, we’ll load the packages we’ll be using in this week’s brief demo. #devtools::install_github("conjugateprior/austin") library(austin) library(quanteda) library(quanteda.textstats) ...'>
+<meta name="twitter:image" content="https://marionlieutaud.github.io/CTA-ED/coverb.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-<script src="libs/pagedtable-1.1/js/pagedtable.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   </style>
@@ -31,7 +29,6 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
-          margin-bottom: 0em;
         }
     .hanging div.csl-entry {
       margin-left:2em;
@@ -96,14 +93,13 @@
 <li><a class="" href="exercise-5-unsupervised-learning-topic-models.html"><span class="header-section-number">21</span> Exercise 5: Unsupervised learning (topic models)</a></li>
 <li><a class="" href="exercise-6-unsupervised-learning-word-embedding.html"><span class="header-section-number">22</span> Exercise 6: Unsupervised learning (word embedding)</a></li>
 <li><a class="" href="exercise-7-sampling-text-information.html"><span class="header-section-number">23</span> Exercise 7: Sampling text information</a></li>
-<li><a class="" href="exercise-8-supervised-learning.html"><span class="header-section-number">24</span> Exercise 8: Supervised learning</a></li>
-<li><a class="" href="exercise-9-validation.html"><span class="header-section-number">25</span> Exercise 9: Validation</a></li>
-<li><a class="" href="assessment-data.html"><span class="header-section-number">26</span> Assessment data</a></li>
-<li><a class="" href="references-2.html"><span class="header-section-number">27</span> References</a></li>
+<li><a class="" href="exercise-9-validation.html"><span class="header-section-number">24</span> Exercise 9: Validation</a></li>
+<li><a class="" href="assessment-data.html"><span class="header-section-number">25</span> Assessment data</a></li>
+<li><a class="" href="references-2.html"><span class="header-section-number">26</span> References</a></li>
 </ul>
 
         <div class="book-extra">
-          <p><a id="book-repo" href="https://github.com/cjbarrie/CTA-ED">View book source <i class="fab fa-github"></i></a></p>
+          <p><a id="book-repo" href="https://github.com/marionlieutaud/CTA-ED">View book source <i class="fab fa-github"></i></a></p>
         </div>
       </nav>
 </div>
@@ -116,8 +112,8 @@
 <span class="header-section-number">9.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup-3"><i class="fas fa-link"></i></a>
 </h2>
 <p>First, we’ll load the packages we’ll be using in this week’s brief demo.</p>
-<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"conjugateprior/austin"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#devtools::install_github("conjugateprior/austin")</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://conjugateprior.github.io/austin">austin</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda.textstats</a></span><span class="op">)</span></span></code></pre></div>
@@ -126,8 +122,8 @@
 <h2>
 <span class="header-section-number">9.2</span> Wordscores<a class="anchor" aria-label="anchor" href="#wordscores"><i class="fas fa-link"></i></a>
 </h2>
-<p>We can inspect the function for the wordscores model by <span class="citation">Laver, Benoit, and Garry (<a href="references-2.html#ref-laver_extracting_2003">2003</a>)</span> in the following way:</p>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<p>We can inspect the function for the wordscores model by <span class="citation">Laver et al. (<a href="references-2.html#ref-laver_extracting_2003">2003</a>)</span> in the following way:</p>
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classic.wordscores</span></span></code></pre></div>
 <pre><code>## function (wfm, scores) 
 ## {
@@ -151,14 +147,14 @@
 ##     class(val) &lt;- c("classic.wordscores", "wordscores", class(val))
 ##     return(val)
 ## }
-## &lt;bytecode: 0x2d4acbca8&gt;
+## &lt;bytecode: 0x1324a9a38&gt;
 ## &lt;environment: namespace:austin&gt;</code></pre>
 <p>We can then take some example data included in the <code>austin</code> package.</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">lbg</span><span class="op">)</span></span>
 <span><span class="va">ref</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://conjugateprior.github.io/austin/reference/getdocs.html">getdocs</a></span><span class="op">(</span><span class="va">lbg</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <p>And here our reference documents are all those documents marked with an “R” for reference; i.e., columns one to five.</p>
-<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ref</span></span></code></pre></div>
 <pre><code>##      docs
 ## words  R1  R2  R3  R4  R5
@@ -201,7 +197,7 @@
 ##    ZK   0   0   0   0   2</code></pre>
 <p>This matrix is simply a series of words (here: letters) and reference texts with word counts for each of them.</p>
 <p>We can then look at the wordscores for each of the words, calculated using the reference dimensions for each of the reference documents.</p>
-<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ws</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://conjugateprior.github.io/austin/reference/classic.wordscores.html">classic.wordscores</a></span><span class="op">(</span><span class="va">ref</span>, scores<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>,<span class="fl">1.5</span>,by<span class="op">=</span><span class="fl">0.75</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ws</span></span></code></pre></div>
 <pre><code>## $pi
@@ -292,11 +288,10 @@
 ## classic.wordscores(wfm = ref, scores = seq(-1.5, 1.5, by = 0.75))
 ## 
 ## attr(,"class")
-## [1] "classic.wordscores" "wordscores"        
-## [3] "list"</code></pre>
+## [1] "classic.wordscores" "wordscores"         "list"</code></pre>
 <p>And here we see the thetas contained in this wordscores object, i.e., the reference dimensions for each of the reference documents and the pis, i.e., the estimated wordscores for each word.</p>
 <p>We can now use these to score the so-called “virgin” texts as follows.</p>
-<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#get "virgin" documents</span></span>
 <span><span class="va">vir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://conjugateprior.github.io/austin/reference/getdocs.html">getdocs</a></span><span class="op">(</span><span class="va">lbg</span>, <span class="st">'V1'</span><span class="op">)</span></span>
 <span><span class="va">vir</span></span></code></pre></div>
@@ -339,7 +334,7 @@
 ##    ZI   0
 ##    ZJ   0
 ##    ZK   0</code></pre>
-<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># predict textscores for the virgin documents</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ws</span>, newdata<span class="op">=</span><span class="va">vir</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 37 of 37 words (100%) are scorable
@@ -352,40 +347,40 @@
 <span class="header-section-number">9.3</span> Wordfish<a class="anchor" aria-label="anchor" href="#wordfish"><i class="fas fa-link"></i></a>
 </h2>
 <p>If we wish, we can inspect the function for the wordscores model by <span class="citation">Slapin and Proksch (<a href="references-2.html#ref-slapin_scaling_2008">2008</a>)</span> in the following way. This is a much more complex algorithm, which is not printed here, but you can inspect on your own devices.</p>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wordfish</span></span></code></pre></div>
 <p>We can then simulate some data, formatted appropriately for wordfiash estimation in the following way:</p>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://conjugateprior.github.io/austin/reference/sim.wordfish.html">sim.wordfish</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dd</span></span></code></pre></div>
 <pre><code>## $Y
 ##      docs
 ## words D01 D02 D03 D04 D05 D06 D07 D08 D09 D10
-##   W01  17  19  22  13  17  11  16  12   6   3
-##   W02  18  21  18  16  12  19  11   7  10   4
-##   W03  22  21  22  19  11  14  11   3   6   1
-##   W04  22  19  18  15  16  13  18   6   2   8
-##   W05  28  21  12  10  13  10   5  14   1   3
-##   W06   5   7  12  13  15   8  12  13  23  19
-##   W07  13   9   5  16  11  17  15  11  35  30
-##   W08   8   7   7  10   9  15  18  23  21  23
-##   W09   4  12   8  10   9  13  18  25  15  19
-##   W10   5   3   7  11  19  16  13  18  17  18
-##   W11  66  55  49  48  38  37  27  24  21   6
-##   W12  53  56  47  39  49  28  22  15  12  14
-##   W13  63  55  47  49  48  31  24  16  17  16
-##   W14  57  64  48  51  27  36  24  27  11  12
-##   W15  58  48  57  44  36  39  29  27  16   5
-##   W16  17  13  24  28  24  32  41  56  67  61
-##   W17   9  19  16  36  30  34  53  34  58  57
-##   W18  11  19  34  27  42  38  48  58  49  66
-##   W19  10  18  27  22  37  52  59  60  60  69
-##   W20  14  14  20  23  37  37  36  51  53  66
+##   W01  26  11  20  14   7  14   4   8   9   3
+##   W02  16  31  15  16  12  15  14  10   7   3
+##   W03  25  21  15  20  11  12  14  11   3   3
+##   W04  28  19  10  17  23   8   6   5  10   8
+##   W05  27  20  23  21  17  23   7   6   9   4
+##   W06   5   7  12   7  21  16  22  22  20  24
+##   W07   3   6   7   7  16   4  22  32  20  21
+##   W08   2   5   7  13  12  18  14  19  27  30
+##   W09   4   8   8   8   7  25  12  13  26  22
+##   W10   4   4   7  11  12  13  20  20  16  20
+##   W11  54  65  53  38  40  31  29  26  22  10
+##   W12  65  41  46  40  38  44  31  25  19  16
+##   W13  59  67  52  27  36  39  29  24  13  14
+##   W14  54  57  57  46  35  33  29  20  10   9
+##   W15  58  54  40  51  43  30  40  25  13  14
+##   W16  23  24  18  31  38  32  51  48  56  51
+##   W17  12  21  23  36  32  31  45  50  53  61
+##   W18  14  14  28  31  45  31  34  43  60  65
+##   W19  13   9  26  35  31  44  40  48  54  68
+##   W20   8  16  33  31  24  37  37  45  53  54
 ## 
 ## $theta
-##  [1] -1.4863011 -1.1560120 -0.8257228 -0.4954337 -0.1651446
-##  [6]  0.1651446  0.4954337  0.8257228  1.1560120  1.4863011
+##  [1] -1.4863011 -1.1560120 -0.8257228 -0.4954337 -0.1651446  0.1651446
+##  [7]  0.4954337  0.8257228  1.1560120  1.4863011
 ## 
 ## $doclen
 ## D01 D02 D03 D04 D05 D06 D07 D08 D09 D10 
@@ -401,24 +396,24 @@
 ## [1] "wordfish.simdata" "list"</code></pre>
 <p>Here we can see the document and word-level FEs, as well as the specified range of the thetas to be estimates.</p>
 <p>Then estimating the document positions is simply a matter of implementing this algorithm.</p>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://conjugateprior.github.io/austin/reference/wordfish.html">wordfish</a></span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">wf</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Call:
 ##  wordfish(wfm = dd$Y)
 ## 
 ## Document Positions:
-##     Estimate Std. Error   Lower    Upper
-## D01  -1.4243    0.10560 -1.6313 -1.21736
-## D02  -1.1483    0.09747 -1.3394 -0.95727
-## D03  -0.7701    0.08954 -0.9456 -0.59455
-## D04  -0.4878    0.08591 -0.6562 -0.31942
-## D05  -0.1977    0.08414 -0.3626 -0.03279
-## D06   0.0313    0.08411 -0.1336  0.19616
-## D07   0.4346    0.08704  0.2640  0.60517
-## D08   0.7163    0.09140  0.5372  0.89546
-## D09   1.2277    0.10447  1.0229  1.43243
-## D10   1.6166    0.11933  1.3827  1.85046</code></pre>
+##      Estimate Std. Error   Lower    Upper
+## D01 -1.536511    0.11546 -1.7628 -1.31022
+## D02 -1.236144    0.10557 -1.4431 -1.02922
+## D03 -0.682051    0.09334 -0.8650 -0.49911
+## D04 -0.323084    0.08925 -0.4980 -0.14815
+## D05 -0.095901    0.08815 -0.2687  0.07688
+## D06  0.007462    0.08803 -0.1651  0.18000
+## D07  0.362959    0.08938  0.1878  0.53815
+## D08  0.745781    0.09397  0.5616  0.92996
+## D09  1.183217    0.10334  0.9807  1.38577
+## D10  1.574864    0.11571  1.3481  1.80166</code></pre>
 </div>
 <div id="using-quanteda" class="section level2" number="9.4">
 <h2>
@@ -443,8 +438,8 @@
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/cjbarrie/CTA-ED/blob/master/05-week5demo.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/cjbarrie/CTA-ED/edit/master/05-week5demo.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/marionlieutaud/CTA-ED/blob/master/05-week5demo.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/marionlieutaud/CTA-ED/edit/master/05-week5demo.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -456,7 +451,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Computational Text Analysis</strong>" was written by Marion Lieutaud. It was last built on 2024-03-19.</p>
+    <p>"<strong>Computational Text Analysis</strong>" was written by Marion Lieutaud. It was last built on 2026-02-25.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -215,7 +215,7 @@ feat_betas %>%
   kable_styling(bootstrap_options = "striped")
 ```
 
-<table class="table table-striped" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> features </th>

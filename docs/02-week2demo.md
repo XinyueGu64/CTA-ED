@@ -29,7 +29,7 @@ head(lipsum_text$text)
 ```
 
 ```
-## [1] "Lorem ipsum dolor sit amet, eget, ut curabitur aliquam in id. Sit platea, cursus sit nulla in, fames diam. Sapien nisi commodo libero praesent quam luctus vivamus nostra. Turpis, sodales, cum pellentesque eget turpis morbi id in sit phasellus, nibh enim. Libero integer accumsan, elementum ullamcorper vivamus ac eros, augue sed ut. Praesent cras aliquam praesent sed eget erat, venenatis sociis. Duis ante imperdiet nec condimentum varius mauris purus, montes, et ut metus taciti ac etiam. Purus, consectetur phasellus et amet fringilla. Imperdiet interdum aptent ut et tempus. Ut tellus sapien habitant tempor elit ultrices, in, sociis. Vestibulum, conubia quis semper quisque faucibus ipsum vitae gravida malesuada. Et platea laoreet, dapibus ut sed dapibus in accumsan nostra. Tortor quam tellus nascetur ridiculus amet cum pretium ut rutrum placerat. In nulla taciti donec massa quisque ligula faucibus eu."
+## [1] "Lorem ipsum dolor sit amet, fermentum, egestas lorem, tempus, pharetra duis ipsum eu tempor dignissim. Sed quis tempus dapibus duis et. Sodales est ligula sit curabitur vitae in nec phasellus magnis, suscipit bibendum, pharetra. Aliquam est lobortis netus est sem est maecenas et efficitur nostra aliquet diam. Ex ut amet cras imperdiet risus volutpat hac. Lacinia lectus odio urna dolor inceptos nulla ut. Porttitor amet sed neque. In eu eget ut porttitor, nulla, nec posuere. Nec consequat velit sit nulla id ante. Vestibulum nec nunc et arcu ut suspendisse ac. Parturient sed volutpat in in nec neque, nisl montes sociosqu urna ligula nunc ut. Lacinia viverra eu sed quis tempus pharetra leo arcu ac, eu venenatis non amet ultrices. Id turpis duis sociosqu faucibus sed aptent eleifend suspendisse ac."
 ```
 
 We can then tokenize with the `unnest_tokens()` function in `tidytext`. 
@@ -43,13 +43,13 @@ head(tokens)
 ```
 
 ```
-##    word
-## 1 lorem
-## 2 ipsum
-## 3 dolor
-## 4   sit
-## 5  amet
-## 6  eget
+##        word
+## 1     lorem
+## 2     ipsum
+## 3     dolor
+## 4       sit
+## 5      amet
+## 6 fermentum
 ```
 
 Now we'll get some larger data, simulating 5000 observations (rows) of random Latin text strings. 
@@ -148,7 +148,7 @@ lipsum_text %>%
 ## Selecting by n
 ```
 
-<table class="table table-striped" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> word </th>
@@ -158,23 +158,23 @@ lipsum_text %>%
 <tbody>
   <tr>
    <td style="text-align:left;"> lipsum </td>
-   <td style="text-align:right;"> 73103 </td>
+   <td style="text-align:right;"> 73520 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> more </td>
-   <td style="text-align:right;"> 73103 </td>
+   <td style="text-align:right;"> 73520 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> words </td>
-   <td style="text-align:right;"> 68321 </td>
+   <td style="text-align:right;"> 68772 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sed </td>
-   <td style="text-align:right;"> 17646 </td>
+   <td style="text-align:right;"> 17616 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> in </td>
-   <td style="text-align:right;"> 12503 </td>
+   <td style="text-align:right;"> 12203 </td>
   </tr>
 </tbody>
 </table>

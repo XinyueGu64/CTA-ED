@@ -12,6 +12,7 @@ library(dplyr)
 library(tidytext)
 library(ggplot2)
 library(ggthemes)
+library(tidyverse)
 ```
 
 Estimating a topic model requires us first to have our data in the form of a document-term-matrix. This is another term for what we have referred to in previous weeks as a document-feature-matrix.
@@ -39,28 +40,28 @@ terms(lda_output, 10)
 ```
 
 ```
-##       Topic 1      Topic 2         Topic 3          Topic 4   Topic 5   
-##  [1,] "bank"       "percent"       "i"              "rating"  "new"     
-##  [2,] "new"        "soviet"        "bush"           "saudi"   "central" 
-##  [3,] "years"      "new"           "people"         "percent" "degrees" 
-##  [4,] "percent"    "california"    "campaign"       "new"     "duracell"
-##  [5,] "two"        "month"         "administration" "iraq"    "high"    
-##  [6,] "blackowned" "manufacturing" "dukakis"        "study"   "snow"    
-##  [7,] "businesses" "production"    "president"      "economy" "expected"
-##  [8,] "year"       "rate"          "thats"          "soviet"  "northern"
-##  [9,] "announced"  "military"      "farmer"         "two"     "record"  
-## [10,] "city"       "air"           "agents"         "year"    "southern"
-##       Topic 6     Topic 7    Topic 8    Topic 9   Topic 10   
-##  [1,] "percent"   "people"   "police"   "barry"   "i"        
-##  [2,] "year"      "peres"    "fire"     "warming" "people"   
-##  [3,] "prices"    "waste"    "soviet"   "leaders" "state"    
-##  [4,] "oil"       "official" "new"      "global"  "new"      
-##  [5,] "million"   "congress" "officers" "moore"   "noriega"  
-##  [6,] "average"   "israel"   "i"        "north"   "roberts"  
-##  [7,] "price"     "jews"     "mrs"      "summit"  "dukakis"  
-##  [8,] "gas"       "offer"    "polish"   "kim"     "greyhound"
-##  [9,] "last"      "office"   "died"     "skins"   "president"
-## [10,] "increased" "germany"  "company"  "man"     "jackson"
+##       Topic 1          Topic 2      Topic 3     Topic 4    Topic 5     
+##  [1,] "percent"        "official"   "soviet"    "company"  "bank"      
+##  [2,] "oil"            "government" "union"     "duracell" "new"       
+##  [3,] "prices"         "year"       "died"      "warming"  "fire"      
+##  [4,] "administration" "two"        "polish"    "new"      "percent"   
+##  [5,] "i"              "officials"  "years"     "global"   "california"
+##  [6,] "people"         "peres"      "president" "children" "county"    
+##  [7,] "million"        "president"  "officers"  "kraft"    "states"    
+##  [8,] "year"           "north"      "tuesday"   "nikolais" "three"     
+##  [9,] "farmer"         "leaders"    "war"       "plant"    "waste"     
+## [10,] "thats"          "offer"      "monday"    "summit"   "year"      
+##       Topic 6     Topic 7      Topic 8      Topic 9      Topic 10  
+##  [1,] "central"   "percent"    "new"        "i"          "bush"    
+##  [2,] "snow"      "noriega"    "rating"     "people"     "i"       
+##  [3,] "wednesday" "state"      "greyhound"  "new"        "dukakis" 
+##  [4,] "northern"  "month"      "year"       "barry"      "people"  
+##  [5,] "heavy"     "rate"       "magellan"   "city"       "campaign"
+##  [6,] "high"      "report"     "spacecraft" "church"     "roberts" 
+##  [7,] "inches"    "index"      "union"      "government" "police"  
+##  [8,] "new"       "economic"   "man"        "moore"      "back"    
+##  [9,] "southern"  "business"   "nelson"     "get"        "told"    
+## [10,] "called"    "businesses" "contact"    "mayor"      "get"
 ```
 
 We can then use the `tidy()` function from `tidytext` to gather the relevant parameters we've estimated. To get the $\beta$ per-topic-per-word probabilities (i.e., the probability that the given term belongs to a given topic) we can do the following.
@@ -77,16 +78,16 @@ lda_beta %>%
 ## # A tibble: 104,730 × 3
 ##    topic term      beta
 ##    <int> <chr>    <dbl>
-##  1     2 percent 0.0284
-##  2     6 percent 0.0213
-##  3     6 year    0.0175
-##  4     1 bank    0.0172
-##  5     3 i       0.0154
-##  6     3 bush    0.0149
-##  7     2 soviet  0.0131
-##  8     5 new     0.0125
-##  9     7 people  0.0117
-## 10    10 i       0.0117
+##  1     7 percent 0.0323
+##  2    10 bush    0.0170
+##  3    10 i       0.0156
+##  4     8 new     0.0134
+##  5     1 percent 0.0133
+##  6    10 dukakis 0.0132
+##  7     5 bank    0.0127
+##  8     5 new     0.0127
+##  9     6 central 0.0120
+## 10     9 i       0.0110
 ## # ℹ 104,720 more rows
 ```
 
@@ -105,16 +106,16 @@ lda_gamma %>%
 ## # A tibble: 1,000 × 3
 ##    document topic gamma
 ##       <int> <int> <dbl>
-##  1       76     3  1.00
-##  2       81    10  1.00
-##  3        6    10  1.00
-##  4       43    10  1.00
-##  5       31     6  1.00
-##  6       95     2  1.00
-##  7       77     3  1.00
-##  8       29     8  1.00
-##  9       80     5  1.00
-## 10       57     7  1.00
+##  1       76     1 1.000
+##  2       81     9 1.000
+##  3        6     7 1.000
+##  4       43    10 1.000
+##  5       95     5 1.000
+##  6       77    10 1.000
+##  7       29     3 1.000
+##  8       80     3 1.000
+##  9       57     2 1.000
+## 10       25     5 1.000
 ## # ℹ 990 more rows
 ```
 
