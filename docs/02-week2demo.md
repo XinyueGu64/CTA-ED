@@ -29,7 +29,7 @@ head(lipsum_text$text)
 ```
 
 ```
-## [1] "Lorem ipsum dolor sit amet, justo nisl, vel torquent, et et tincidunt, aliquam. Et vel inceptos nec amet pulvinar. Dui tellus ut mattis nulla. Nostra maximus libero vitae ullamcorper nam in. Hac amet dolor praesent a nunc mi nec non ac, enim. Aenean rutrum. Varius purus felis ut rhoncus. Pellentesque, ipsum in feugiat nec enim massa suspendisse ad id justo eu euismod eu dis. Dignissim dignissim, turpis eu ex, ac at nunc mi fusce sit. Mus eleifend mauris posuere varius porta a elementum donec lacus amet. Maecenas lacus viverra malesuada, ante in."
+## [1] "Lorem ipsum dolor sit amet, sodales nunc torquent a hac risus mauris diam eu. Lobortis potenti nibh scelerisque cubilia mi egestas netus donec. Sodales inceptos pharetra ex nostra vehicula massa porttitor. Ligula habitant luctus amet dui ante mauris montes bibendum. Non consectetur leo. Ac aliquam egestas mi nec justo ante cras eu ut. Leo habitasse egestas. Aliquam accumsan facilisi phasellus vestibulum taciti in sed, posuere. Elementum parturient penatibus egestas id velit turpis pretium tincidunt placerat elementum consectetur facilisis. Primis accumsan tristique quam lorem nec. Litora diam duis metus nisl neque erat curabitur ac metus. Cras duis lacus malesuada pellentesque cubilia sed vulputate quam porta. Et at, in non sed turpis dui. Quam in ipsum feugiat bibendum pharetra orci convallis facilisi. Erat iaculis justo eu sociis sit sed, tempus penatibus dui. Neque conubia maximus in felis ullamcorper."
 ```
 
 We can then tokenize with the `unnest_tokens()` function in `tidytext`. 
@@ -43,13 +43,13 @@ head(tokens)
 ```
 
 ```
-##    word
-## 1 lorem
-## 2 ipsum
-## 3 dolor
-## 4   sit
-## 5  amet
-## 6 justo
+##      word
+## 1   lorem
+## 2   ipsum
+## 3   dolor
+## 4     sit
+## 5    amet
+## 6 sodales
 ```
 
 Now we'll get some larger data, simulating 5000 observations (rows) of random Latin text strings. 
@@ -158,23 +158,23 @@ lipsum_text %>%
 <tbody>
   <tr>
    <td style="text-align:left;"> lipsum </td>
-   <td style="text-align:right;"> 72458 </td>
+   <td style="text-align:right;"> 72490 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> more </td>
-   <td style="text-align:right;"> 72458 </td>
+   <td style="text-align:right;"> 72490 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> words </td>
-   <td style="text-align:right;"> 67700 </td>
+   <td style="text-align:right;"> 67728 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sed </td>
-   <td style="text-align:right;"> 17931 </td>
+   <td style="text-align:right;"> 17710 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> in </td>
-   <td style="text-align:right;"> 12480 </td>
+   <td style="text-align:right;"> 12638 </td>
   </tr>
 </tbody>
 </table>

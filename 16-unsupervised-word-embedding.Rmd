@@ -22,7 +22,7 @@ library(tidytext) # includes set of functions useful for manipulating text
 library(ggthemes) # to make your plots look nice
 library(text2vec) # for word embedding implementation
 library(widyr) # for reshaping the text data
-library(irlba) # for svd
+library(RSpectra) # for svd
 library(umap) # for dimensionality reduction
 ```
 
@@ -167,7 +167,7 @@ pmi_matrix <- normalized_prob %>%
 #remove missing data
 pmi_matrix@x[is.na(pmi_matrix@x)] <- 0
 #run SVD
-pmi_svd <- irlba(pmi_matrix, 256, maxit = 500)
+pmi_svd <- svds(pmi_matrix, 256)
 
 glimpse(pmi_matrix)
 
@@ -281,7 +281,7 @@ Let's first make sure we have loaded the packages we need:
 library(text2vec) # for implementation of GloVe algorithm
 library(stringr) # to handle text strings
 library(umap) # for dimensionality reduction later on
-
+library(RcppParallel) # for parallel processing
 ```
 
 ## Implementation
@@ -298,7 +298,7 @@ The iterations parameter `ITERS` simply sets the maximum number of iterations to
 
 The `DIM` parameter specifies the length of the word vector we want to result (i.e., just as we set a limit of 256 for the SVD approach above). Finally, `COUNT_MIN` is specifying the minimum count of words that we want to keep. In other words, if a word appears fewer than ten times, it is discarded. Again, this is the same as above where we discarded word pairings that appeared fewer than twenty times.
 
-```{r, eval = F}
+```{r}
 # ================================ choice parameters
 # ================================
 WINDOW_SIZE <- 6
@@ -389,7 +389,6 @@ But...
 All hope is not lost, space travellers. A smart technique by @mcinnes_umap_2020 linked [here](https://arxiv.org/abs/1802.03426) describes a way to reduce the dimensionality of such embedding layers using what is called "Uniform Manifold Approximation and Projection." How do we do this? Well, happily, with the <tt>umap</tt> package it is pretty straightforward!
 
 ```{r, eval = F}
-
 # GloVe dimension reduction
 glove_umap <- umap(glove_embedding, n_components = 2, metric = "cosine", n_neighbors = 25, min_dist = 0.1, spread=2)
 
@@ -404,7 +403,6 @@ load("data/wordembed/glove_umap.RData")
 Why is this helpful? Well, for a number of reasons, but it is particularly helpful here for visualizing our embeddings in two-dimensional space. 
 
 ```{r}
-
 # Put results in a dataframe for ggplot
 df_glove_umap <- as.data.frame(glove_umap[["layout"]])
 

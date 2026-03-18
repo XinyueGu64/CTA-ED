@@ -6,13 +6,18 @@ First, we'll load the packages we'll be using in this week's brief demo. here we
 
 
 ``` r
-library(Matrix) #for handling matrices
+# we need to install some of these packages from source
+library(Matrix)
 library(tidyverse)
 library(tidytext)
-library(irlba) # for SVD
 library(umap) # for dimensionality reduction
 library(quanteda)
+library(RSpectra) # for singular value decomposition
+```
 
+
+
+``` r
 load("data/wordembed/pmi_svd.RData")
 load("data/wordembed/pmi_matrix.RData")
 ```
@@ -21,7 +26,7 @@ load("data/wordembed/pmi_matrix.RData")
 How does it work?
 
 - Various approaches, including:
-  - 1. SVD
+  - 1. Singular value decomposition (SVD) - a dimensionality reduction technique, but not as semantically sophisticated as the neural network-based techniques
   - 2. Neural network-based techniques like GloVe and Word2Vec
   
 In both approaches, we are:
@@ -73,7 +78,7 @@ And to do this, we simply need to do the following.
 
 
 ``` r
-pmi_svd <- irlba(pmi_matrix, 256, maxit = 500)
+pmi_svd <- svds(pmi_matrix, 256)
 ```
 
 After which we can collect our vectors for each word and inspect them. 
@@ -95,11 +100,11 @@ head(word_vectors[1:5, 1:5])
 
 ```
 ##               [,1]        [,2]        [,3]        [,4]        [,5]
-## the    0.007810973  0.07024009  0.06377615  0.03139044 -0.12362108
-## to     0.006889381 -0.03210269  0.10665925  0.03537632  0.10104552
-## and   -0.050498380  0.09131495  0.19658197 -0.08136253 -0.01605705
-## of    -0.015628371  0.16306386  0.13296127 -0.04087709 -0.23175976
-## https  0.301718525  0.07658843 -0.01720398  0.26219147  0.07930941
+## the    0.007810973  0.07024009 -0.06377615  0.03139044  0.12362108
+## to     0.006889381 -0.03210269 -0.10665925  0.03537632 -0.10104552
+## and   -0.050498380  0.09131495 -0.19658197 -0.08136253  0.01605705
+## of    -0.015628371  0.16306386 -0.13296127 -0.04087709  0.23175976
+## https  0.301718525  0.07658843  0.01720398  0.26219147 -0.07930941
 ```
 
 ## Using `GloVe` or `word2vec`
@@ -379,12 +384,26 @@ pmi_matrix <- normalized_prob %>%
 #remove missing data
 pmi_matrix@x[is.na(pmi_matrix@x)] <- 0
 #run SVD
+```
 
-# There is a problem with the package 'irlba' and the updated version of 'Matrix'
-pmi_svd <- irlba::irlba(pmi_matrix, 256, maxit = 500)
 
-# downgrading the Matrix version of the package might help
-remotes::install_version("Matrix", version = "1.6-1.1")
 
+``` r
+# Singular value decomposition
+# The irlba package had problem compiling on MAC OS so
+# switched from command irlba::irlba() to RSpectra::svds() 
+pmi_svd <- svds(pmi_matrix, 256)
 glimpse(pmi_matrix)
+```
+
+```
+## Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+##   ..@ i       : int [1:12487] 0 1 2 3 4 5 6 7 8 9 ...
+##   ..@ p       : int [1:1468] 0 725 1221 1607 1801 2013 2260 2385 2499 2594 ...
+##   ..@ Dim     : int [1:2] 1467 1467
+##   ..@ Dimnames:List of 2
+##   .. ..$ : chr [1:1467] "the" "of" "and" "this" ...
+##   .. ..$ : chr [1:1467] "the" "of" "and" "this" ...
+##   ..@ x       : num [1:12487] 0.2227 0.0361 -0.1723 -0.1849 -0.1372 ...
+##   ..@ factors : list()
 ```

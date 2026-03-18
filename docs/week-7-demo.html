@@ -112,22 +112,23 @@
 <span class="header-section-number">13.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup-5"><i class="fas fa-link"></i></a>
 </h2>
 <p>First, we’ll load the packages we’ll be using in this week’s brief demo. here we are pre-loading an already-estimated PMI matrix and results from the singular value decomposition approach.</p>
-<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://Matrix.R-forge.R-project.org">Matrix</a></span><span class="op">)</span> <span class="co">#for handling matrices</span></span>
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># we need to install some of these packages from source</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://Matrix.R-forge.R-project.org">Matrix</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://juliasilge.github.io/tidytext/">tidytext</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">irlba</span><span class="op">)</span> <span class="co"># for SVD</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tkonopka/umap">umap</a></span><span class="op">)</span> <span class="co"># for dimensionality reduction</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"data/wordembed/pmi_svd.RData"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/RSpectra">RSpectra</a></span><span class="op">)</span> <span class="co"># for singular value decomposition</span></span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"data/wordembed/pmi_svd.RData"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"data/wordembed/pmi_matrix.RData"</span><span class="op">)</span></span></code></pre></div>
 <p>How does it work?</p>
 <ul>
 <li>Various approaches, including:
 <ul>
 <li><ol style="list-style-type: decimal">
-<li>SVD</li>
+<li>Singular value decomposition (SVD) - a dimensionality reduction technique, but not as semantically sophisticated as the neural network-based techniques</li>
 </ol></li>
 <li><ol start="2" style="list-style-type: decimal">
 <li>Neural network-based techniques like GloVe and Word2Vec</li>
@@ -171,22 +172,22 @@
 ##   ..@ factors : list()</code></pre>
 <p>We will then use the “Singular Value Decomposition” (SVD) techique. This is another multidimensional scaling technique, where the first axis of the resulting coordinates captures the most variance, the second the second-most etc…</p>
 <p>And to do this, we simply need to do the following.</p>
-<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pmi_svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/irlba/man/irlba.html">irlba</a></span><span class="op">(</span><span class="va">pmi_matrix</span>, <span class="fl">256</span>, maxit <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pmi_svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RSpectra/man/svds.html">svds</a></span><span class="op">(</span><span class="va">pmi_matrix</span>, <span class="fl">256</span><span class="op">)</span></span></code></pre></div>
 <p>After which we can collect our vectors for each word and inspect them.</p>
-<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">word_vectors</span> <span class="op">&lt;-</span> <span class="va">pmi_svd</span><span class="op">$</span><span class="va">u</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">word_vectors</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">pmi_matrix</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">word_vectors</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 21172   256</code></pre>
-<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">word_vectors</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##               [,1]        [,2]        [,3]        [,4]        [,5]
-## the    0.007810973  0.07024009  0.06377615  0.03139044 -0.12362108
-## to     0.006889381 -0.03210269  0.10665925  0.03537632  0.10104552
-## and   -0.050498380  0.09131495  0.19658197 -0.08136253 -0.01605705
-## of    -0.015628371  0.16306386  0.13296127 -0.04087709 -0.23175976
-## https  0.301718525  0.07658843 -0.01720398  0.26219147  0.07930941</code></pre>
+## the    0.007810973  0.07024009 -0.06377615  0.03139044  0.12362108
+## to     0.006889381 -0.03210269 -0.10665925  0.03537632 -0.10104552
+## and   -0.050498380  0.09131495 -0.19658197 -0.08136253  0.01605705
+## of    -0.015628371  0.16306386 -0.13296127 -0.04087709  0.23175976
+## https  0.301718525  0.07658843  0.01720398  0.26219147 -0.07930941</code></pre>
 </div>
 <div id="using-glove-or-word2vec" class="section level2" number="13.2">
 <h2>
@@ -202,7 +203,7 @@
 <span class="header-section-number">13.3</span> Now with the Royals<a class="anchor" aria-label="anchor" href="#now-with-the-royals"><i class="fas fa-link"></i></a>
 </h2>
 <p>This is text data from the Court circular (Pagnini). This original data has been collected by Marta Pagnini, who is a researcher at the London School of Economics. Each line is a paragraph in an issue of the Court Circular. The Court Circular is the official agenda of activities for the Royal family paper. It has been published every single day since the 19th century, giving information on what the Royals are doing and who they are meeting with.</p>
-<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">court_circular</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv2</a></span><span class="op">(</span><span class="st">"data/wordembed/Court_Circular_1000_random_sample.csv"</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">court_circular</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   X          Date
@@ -219,7 +220,7 @@
 ## 4                                                                                                                                                                                                                                                                                                                                                                                                                                                             The Earl and Countess of Wessex this morning visited Salute the NHS, Hangar 113, Bicester Motion, Skimmingdish Lane, Bicester, Oxfordshire. His Royal Highness this evening attended a Surrey Heath Prepared Meeting via video link. The Countess of Wessex this afternoon held a Meeting with the Lord Hague of Richmond (Co-Founder, Preventing Sexual Violence in Conflict Initiative) via video link. Her Royal Highness, Patron, Brendoncare Foundation, later held a Meeting via video link with Mrs. Carole Sawyers upon relinquishing her appointment as Chief Executive Officer and Mrs. Marianne Wanstall upon assuming the appointment.
 ## 5 The Princess Royal, Patron, RYA Sailability, this morning visited Colne Valley Special Sailors, the Aquadrome, Rickmansworth, and was received by Miss Linda Haye (Deputy Lieutenant of Hertfordshire). Her Royal Highness this afternoon visited Building Research Establishment Certification, Bucknalls Lane, Garston, Watford, and was received by Lady Staughton (Deputy Lieutenant of Hertfordshire). The Princess Royal, Patron, Sense - the National Deafblind and Rubella Association, later re-opened buildings at the Anne Wall Centre, 12 Hyde Close, Barnet, and was received by Mr. Stephen Folkes (Deputy Lieutenant of Greater London). Her Royal Highness this evening visited the Royal Horticultural Society's Chelsea Flower Show at the Royal Hospital Chelsea, London SW3. The Princess Royal, President, International League for the Protection of Horses, was represented by Mrs. Timothy Holderness-Roddam at the Service of Thanksgiving for Mrs. Vivien McIrvine (Past Vice President) which was held in the Guards Chapel, Wellington Barracks, Birdcage Walk, London SW1, today.
 ## 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Princess Alexandra this afternoon opened the Michael Letcher Pathology Complex at the Princess Alexandra Hospital NHS Trust, Hamstel Road, Harlow, and was received by Her Majesty's Lord-Lieutenant of Essex (the Lord Petre).</code></pre>
-<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># If you're working on your own computer, you can download the data directly from the course website repository</span></span>
 <span><span class="va">court_circular</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/gzcon.html">gzcon</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://github.com/marionlieutaud/CTA-ED/blob/main/data/wordembed/Court_Circular_1000_random_sample.csv?raw=true"</span><span class="op">)</span><span class="op">)</span>, sep<span class="op">=</span><span class="st">","</span><span class="op">)</span></span>
 <span><span class="co"># There is a problem there</span></span></code></pre></div>
@@ -241,10 +242,10 @@
 <p>Well, we’re first unnesting our tweet data as in previous exercises. But importantly, here, we’re not unnesting to individual tokens but to ngrams of length 6 or, in other words, for postID n with words k indexed by i, we take words i<sub>1</sub> …i<sub>6</sub>, then we take words i<sub>2</sub> …i<sub>7</sub>. Try just running the first two lines of the code below to see what this means in practice.</p>
 <p>After this, we make a unique ID for the particular ngram we create for each postID, and then we make a unique skipgramID for each postID and ngram. And then we unnest the words of each ngram associated with each skipgramID.</p>
 <p>You can see the resulting output below.</p>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">court_circular</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] "X"         "Date"      "Paragraph"</code></pre>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#create context window with length 6</span></span>
 <span><span class="va">court_skipgrams</span> <span class="op">&lt;-</span> <span class="va">court_circular</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>textID <span class="op">=</span> <span class="va">X</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -278,7 +279,7 @@
 <p>What next?</p>
 <p>Well we can now calculate a set of probabilities from our skipgrams. We do so with the <code><a href="https://juliasilge.github.io/widyr/reference/pairwise_count.html">pairwise_count()</a></code> function from the <tt>widyr</tt> package. Essentially, this function is saying: for each skipgramID count the number of times a word appears with another word for that feature (where the feature is the skipgramID). We set <code>diag</code> to <code>TRUE</code> when we also want to count the number of times a word appears near itself.</p>
 <p>The probability we are then calculating is the number of times a word appears with another word denominated by the total number of word pairings across the whole corpus.</p>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/juliasilge/widyr">widyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -338,7 +339,7 @@
 <p>Currently our word embeddings include a lot of stopwords - we could consider removing them.</p>
 <p>Okay, now we have our skipgram probabilities we need to get our “unigram probabilities” in order to normalize the skipgram probabilities before applying the singular value decomposition.</p>
 <p>What is a “unigram probability”? Well, this is just a technical way of saying: count up all the appearances of a given word in our corpus then divide that by the total number of words in our corpus. And we can do this as such:</p>
-<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#calculate unigram probabilities (used to normalize skipgram probabilities later)</span></span>
 <span><span class="va">unigram_probs</span> <span class="op">&lt;-</span> <span class="va">court_circular</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://juliasilge.github.io/tidytext/reference/unnest_tokens.html">unnest_tokens</a></span><span class="op">(</span><span class="va">word</span>, <span class="va">Paragraph</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -351,7 +352,7 @@
 <p>Once we’ve recovered these normalized probabilities, we can have a look at the joint probabilities for a given item, i.e., word.</p>
 <p>Here, we look at the word “charity” and “duke” and look at those words with the highest value for “p_together.”</p>
 <p>Higher values greater than 1 indicate that the words are more likely to appear close to each other; low values less than 1 indicate that they are unlikely to appear close to each other. This, in other words, gives an indication of the association of two words.</p>
-<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#normalize skipgram probabilities</span></span>
 <span><span class="va">normalized_prob</span> <span class="op">&lt;-</span> <span class="va">skipgram_probs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co">#filter out skipgrams with n &lt;=20</span></span>
@@ -373,7 +374,7 @@
 ## 1 charity charity    72 0.0000305 0.000165 0.000165   1122.   
 ## 2 charity a          24 0.0000102 0.000165 0.0112        5.52 
 ## 3 charity the        28 0.0000119 0.000165 0.0870        0.827</code></pre>
-<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">normalized_prob</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">word1</span> <span class="op">==</span> <span class="st">"duke"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">p_together</span><span class="op">)</span></span></code></pre></div>
@@ -394,22 +395,29 @@
 <p>Using this normalized probabilities, we then calculate the PMI or “Pointwise Mutual Information” value, which is simply the log of the joint probability we calculated above.</p>
 <p><strong>Definition time</strong>: “PMI is logarithm of the probability of finding two words together, normalized for the probability of finding each of the words alone.”</p>
 <p>We then cast our word pairs into a sparse matrix where values correspond to the PMI between two corresponding words.</p>
-<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pmi_matrix</span> <span class="op">&lt;-</span> <span class="va">normalized_prob</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>pmi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">p_together</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://juliasilge.github.io/tidytext/reference/cast_sparse.html">cast_sparse</a></span><span class="op">(</span><span class="va">word1</span>, <span class="va">word2</span>, <span class="va">pmi</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#remove missing data</span></span>
 <span><span class="va">pmi_matrix</span><span class="op">@</span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">pmi_matrix</span><span class="op">@</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span><span class="co">#run SVD</span></span>
-<span></span>
-<span><span class="co"># There is a problem with the package 'irlba' and the updated version of 'Matrix'</span></span>
-<span><span class="va">pmi_svd</span> <span class="op">&lt;-</span> <span class="fu">irlba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/irlba/man/irlba.html">irlba</a></span><span class="op">(</span><span class="va">pmi_matrix</span>, <span class="fl">256</span>, maxit <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># downgrading the Matrix version of the package might help</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html">install_version</a></span><span class="op">(</span><span class="st">"Matrix"</span>, version <span class="op">=</span> <span class="st">"1.6-1.1"</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">#run SVD</span></span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Singular value decomposition</span></span>
+<span><span class="co"># The irlba package had problem compiling on MAC OS so</span></span>
+<span><span class="co"># switched from command irlba::irlba() to RSpectra::svds() </span></span>
+<span><span class="va">pmi_svd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RSpectra/man/svds.html">svds</a></span><span class="op">(</span><span class="va">pmi_matrix</span>, <span class="fl">256</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">pmi_matrix</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+##   ..@ i       : int [1:12487] 0 1 2 3 4 5 6 7 8 9 ...
+##   ..@ p       : int [1:1468] 0 725 1221 1607 1801 2013 2260 2385 2499 2594 ...
+##   ..@ Dim     : int [1:2] 1467 1467
+##   ..@ Dimnames:List of 2
+##   .. ..$ : chr [1:1467] "the" "of" "and" "this" ...
+##   .. ..$ : chr [1:1467] "the" "of" "and" "this" ...
+##   ..@ x       : num [1:12487] 0.2227 0.0361 -0.1723 -0.1849 -0.1372 ...
+##   ..@ factors : list()</code></pre>
 
 </div>
 </div>
@@ -442,7 +450,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Computational Text Analysis</strong>" was written by Marion Lieutaud. It was last built on 2026-03-04.</p>
+    <p>"<strong>Computational Text Analysis</strong>" was written by Marion Lieutaud. It was last built on 2026-03-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

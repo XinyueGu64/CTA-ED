@@ -104,7 +104,7 @@ search_results <- dataverse_search("corpus politics text", type = "dataset", per
 ```
 
 ```
-## 10 of 51855 results retrieved
+## 10 of 51936 results retrieved
 ```
 
 ``` r

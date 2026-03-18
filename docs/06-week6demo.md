@@ -1,7 +1,8 @@
 # Week 6 Demo
 
 ## Setup
-First, we'll load the packages we'll be using in this week's brief demo. 
+
+First, we'll load the packages we'll be using in this week's brief demo.
 
 
 ``` r
@@ -18,8 +19,9 @@ library(stringr)
 ```
 
 ## Regex exercise
-We'll start with a quick regex exercise to practice extracting information from text.
-For this exercise, we will use the text of the recent emails sent to academic staff by Peter Mathieson
+
+We'll start with a quick regex exercise to practice extracting information from text. For this exercise, we will use the text of the recent emails sent to academic staff by Peter Mathieson
+
 
 ``` r
 email1 <- "Dear colleague,
@@ -206,22 +208,179 @@ Peter and Kim"
 ```
 
 
-
 ``` r
 # combine the emails into a single list of documents
 emails <- c(email1, email2, email3, email4) %>%
-  as_tibble
+  as_tibble %>%
+  # add a variable for row number
+  mutate(email = row_number())
 ```
 
 ## Regex exercise
-Use Regex and commands from the stringr package (check the online cheatsheet) to extract:
-- all the numbers 
-- all the dates (e.g., 2026, 2027, 2025/26, etc.)
-- all the names mentioned in those emails
-- all the words related to finances (finance, financial, finances, financially, etc.)) and their frequency in each email
 
+Use Regex and commands from the stringr package (check the online cheatsheet) to extract: - all the numbers - all the dates (e.g., 2026, 2027, 2025/26, etc.) - all the names mentioned in those emails - all the words related to finances (finance, financial, finances, financially, etc.)) and their frequency in each email
+
+
+``` r
+# extract all the numbers
+emails %>%
+  mutate(numbers = str_extract_all(value, "\\d+")) %>%
+  # turn into a list of numbers
+  unnest(numbers) %>%
+  group_by(email)
+```
+
+```
+## # A tibble: 53 × 3
+## # Groups:   email [4]
+##    value                                                           email numbers
+##    <chr>                                                           <int> <chr>  
+##  1 "Dear colleague,\n\nWork is continuing across our five change …     1 2025   
+##  2 "Dear colleague,\n\nWork is continuing across our five change …     1 2026   
+##  3 "Dear colleague,\n\nWork is continuing across our five change …     1 27     
+##  4 "Dear colleague,\n\nWork is continuing across our five change …     1 2027   
+##  5 "Dear colleague,\n\nWork is continuing across our five change …     1 08     
+##  6 "Dear colleague,\n\nWork is continuing across our five change …     1 10     
+##  7 "Dear colleague,\n\nWork is continuing across our five change …     1 2026   
+##  8 "Dear colleague,\n\nHappy New Year and welcome to the new seme…     2 2025   
+##  9 "Dear colleague,\n\nHappy New Year and welcome to the new seme…     2 2024   
+## 10 "Dear colleague,\n\nHappy New Year and welcome to the new seme…     2 25     
+## # ℹ 43 more rows
+```
+
+
+``` r
+# extract all the dates
+emails %>%
+  mutate(dates = str_extract_all(value, "\\d{4}")) %>%
+  # turn into a list of numbers
+  unnest(dates) %>%
+  group_by(email) 
+```
+
+```
+## # A tibble: 17 × 3
+## # Groups:   email [4]
+##    value                                                             email dates
+##    <chr>                                                             <int> <chr>
+##  1 "Dear colleague,\n\nWork is continuing across our five change wo…     1 2025 
+##  2 "Dear colleague,\n\nWork is continuing across our five change wo…     1 2026 
+##  3 "Dear colleague,\n\nWork is continuing across our five change wo…     1 2027 
+##  4 "Dear colleague,\n\nWork is continuing across our five change wo…     1 2026 
+##  5 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2025 
+##  6 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2024 
+##  7 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2026 
+##  8 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2026 
+##  9 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2026 
+## 10 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2024 
+## 11 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2024 
+## 12 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2022 
+## 13 "Dear colleague,\n\nHappy New Year and welcome to the new semest…     2 2026 
+## 14 "Dear colleague,\n\nThank you to everyone who came to our recent…     3 2027 
+## 15 "Dear colleague,\n\nThank you to everyone who came to our recent…     3 2030 
+## 16 "Dear colleague,\n\nThank you to everyone who came to our recent…     3 2027 
+## 17 "Dear colleague,\n\nIn our update last week, we let you know tha…     4 2030
+```
+
+
+``` r
+emails %>%
+  mutate(names = str_extract_all(value, "\\b[A-Z][a-z]+\\b")) %>%
+  # turn into a list of numbers
+  unnest(names) %>%
+  group_by(email) %>%
+  select(names)
+```
+
+```
+## Adding missing grouping variables: `email`
+```
+
+```
+## # A tibble: 310 × 2
+## # Groups:   email [4]
+##    email names
+##    <int> <chr>
+##  1     1 Dear 
+##  2     1 Work 
+##  3     1 This 
+##  4     1 Staff
+##  5     1 Our  
+##  6     1 Staff
+##  7     1 Read 
+##  8     1 Staff
+##  9     1 It   
+## 10     1 This 
+## # ℹ 300 more rows
+```
+
+``` r
+# not enough - that just captures any capitalised word
+# let's say we want words that are capitalised and are not at the beginning of a sentence (i.e., not preceded by a full stop)
+
+emails %>%
+  mutate(names = str_extract_all(value, "(?<!\\.\\s)\\b[A-Z][a-z]+\\b")) %>%
+  # turn into a list of numbers
+  unnest(names) %>%
+  group_by(email)
+```
+
+```
+## # A tibble: 239 × 3
+## # Groups:   email [4]
+##    value                                                             email names
+##    <chr>                                                             <int> <chr>
+##  1 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Dear 
+##  2 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Work 
+##  3 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Staff
+##  4 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Staff
+##  5 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Read 
+##  6 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Staff
+##  7 "Dear colleague,\n\nWork is continuing across our five change wo…     1 It   
+##  8 "Dear colleague,\n\nWork is continuing across our five change wo…     1 We   
+##  9 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Univ…
+## 10 "Dear colleague,\n\nWork is continuing across our five change wo…     1 Coll…
+## # ℹ 229 more rows
+```
+
+``` r
+# still doesn't work because a lot of words are preceded by e.g. paragraph breaks.
+# let's have a look at our text again, we might be able to find patterns, e.g. "Mr", "Dr", "Professor", etc
+# As it happens there are very few names in these emails - only the signatures. So how would we capture those? Maybe the last line of the email?
+
+#extract the signature (i.e. the last line of each text)
+emails %>%
+  mutate(signature = str_extract(value, "\\w+\\z")) 
+```
+
+```
+## # A tibble: 4 × 3
+##   value                                                          email signature
+##   <chr>                                                          <int> <chr>    
+## 1 "Dear colleague,\n\nWork is continuing across our five change…     1 Peter    
+## 2 "Dear colleague,\n\nHappy New Year and welcome to the new sem…     2 Peter    
+## 3 "Dear colleague,\n\nThank you to everyone who came to our rec…     3 Kim      
+## 4 "Dear colleague,\n\nIn our update last week, we let you know …     4 Kim
+```
+
+``` r
+emails %>%
+  mutate(signature = str_extract(value, "\\b(.*)$")) %>%
+  select(signature)
+```
+
+```
+## # A tibble: 4 × 1
+##   signature    
+##   <chr>        
+## 1 Peter        
+## 2 Peter        
+## 3 Peter and Kim
+## 4 Peter and Kim
+```
 
 ## Topic model demo
+
 Estimating a topic model requires us first to have our data in the form of a document-term-matrix. This is another term for what we have referred to in previous weeks as a document-feature-matrix.
 
 We can take some example data from the `topicmodels` package. This text is from news releases by the Associated Press. It consists of around 2,200 articles (documents) and over 10,000 terms (words).
@@ -247,28 +406,28 @@ terms(lda_output, 10)
 ```
 
 ```
-##       Topic 1          Topic 2       Topic 3    Topic 4     Topic 5    
-##  [1,] "administration" "percent"     "soviet"   "i"         "percent"  
-##  [2,] "percent"        "year"        "official" "rating"    "year"     
-##  [3,] "thats"          "noriega"     "peres"    "barry"     "oil"      
-##  [4,] "trade"          "immigration" "police"   "bush"      "prices"   
-##  [5,] "farmer"         "last"        "school"   "percent"   "duracell" 
-##  [6,] "grain"          "panama"      "company"  "new"       "company"  
-##  [7,] "warming"        "businesses"  "last"     "campaign"  "gas"      
-##  [8,] "summit"         "increased"   "offer"    "moore"     "inflation"
-##  [9,] "global"         "officials"   "people"   "president" "last"     
-## [10,] "i"              "production"  "plant"    "cuban"     "rate"     
-##       Topic 6      Topic 7    Topic 8   Topic 9     Topic 10  
-##  [1,] "new"        "bank"     "dukakis" "people"    "new"     
-##  [2,] "two"        "soviet"   "bush"    "roberts"   "central" 
-##  [3,] "california" "new"      "police"  "agents"    "degrees" 
-##  [4,] "north"      "state"    "i"       "greyhound" "high"    
-##  [5,] "magellan"   "years"    "new"     "i"         "york"    
-##  [6,] "spacecraft" "economy"  "fire"    "waste"     "snow"    
-##  [7,] "officials"  "percent"  "man"     "union"     "record"  
-##  [8,] "contact"    "year"     "people"  "year"      "florio"  
-##  [9,] "kim"        "officers" "monday"  "years"     "northern"
-## [10,] "states"     "polish"   "mrs"     "president" "southern"
+##       Topic 1     Topic 2          Topic 3    Topic 4     Topic 5   
+##  [1,] "i"         "year"           "state"    "soviet"    "dukakis" 
+##  [2,] "people"    "i"              "soviet"   "rating"    "bush"    
+##  [3,] "police"    "people"         "polish"   "saudi"     "fire"    
+##  [4,] "mrs"       "administration" "years"    "people"    "central" 
+##  [5,] "new"       "thats"          "died"     "congress"  "snow"    
+##  [6,] "roberts"   "farmer"         "officers" "iraq"      "southern"
+##  [7,] "years"     "percent"        "people"   "president" "i"       
+##  [8,] "greyhound" "country"        "church"   "ms"        "high"    
+##  [9,] "waste"     "skins"          "day"      "two"       "morning" 
+## [10,] "agents"    "trade"          "pope"     "officials" "new"     
+##       Topic 6      Topic 7       Topic 8   Topic 9     Topic 10    
+##  [1,] "barry"      "year"        "percent" "bush"      "new"       
+##  [2,] "duracell"   "official"    "bank"    "president" "california"
+##  [3,] "last"       "peres"       "year"    "noriega"   "percent"   
+##  [4,] "moore"      "million"     "economy" "soviet"    "york"      
+##  [5,] "new"        "border"      "prices"  "i"         "state"     
+##  [6,] "cuban"      "company"     "rate"    "military"  "magellan"  
+##  [7,] "news"       "grain"       "new"     "officials" "spacecraft"
+##  [8,] "diplomatic" "offer"       "oil"     "panama"    "states"    
+##  [9,] "kraft"      "bar"         "month"   "campaign"  "two"       
+## [10,] "company"    "immigration" "last"    "committee" "florio"
 ```
 
 We can then use the `tidy()` function from `tidytext` to gather the relevant parameters we've estimated. To get the $\beta$ per-topic-per-word probabilities (i.e., the probability that the given term belongs to a given topic) we can do the following.
@@ -283,23 +442,22 @@ lda_beta %>%
 
 ```
 ## # A tibble: 104,730 × 3
-##    topic term             beta
-##    <int> <chr>           <dbl>
-##  1     2 percent        0.0235
-##  2     5 percent        0.0181
-##  3     6 new            0.0145
-##  4     4 i              0.0131
-##  5     1 administration 0.0129
-##  6     5 year           0.0129
-##  7    10 new            0.0127
-##  8     7 bank           0.0122
-##  9     6 two            0.0117
-## 10     5 oil            0.0107
+##    topic term      beta
+##    <int> <chr>    <dbl>
+##  1     8 percent 0.0343
+##  2     1 i       0.0163
+##  3    10 new     0.0158
+##  4     7 year    0.0134
+##  5     3 state   0.0130
+##  6     5 dukakis 0.0129
+##  7     2 year    0.0123
+##  8     8 bank    0.0110
+##  9     2 i       0.0109
+## 10     2 people  0.0109
 ## # ℹ 104,720 more rows
 ```
 
 And to get the $\gamma$ per-document-per-topic probabilities (i.e., the probability that a given document (here: article) belongs to a particular topic) we do the following.
-
 
 
 ``` r
@@ -313,16 +471,16 @@ lda_gamma %>%
 ## # A tibble: 1,000 × 3
 ##    document topic gamma
 ##       <int> <int> <dbl>
-##  1       76     1 1.000
-##  2       81     7 1.000
-##  3        6     2 1.000
-##  4       43     9 1.000
-##  5       31     5 1.000
-##  6       95     6 1.000
-##  7       77     8 1.000
-##  8       29     7 1.000
-##  9       80    10 1.000
-## 10       57     9 1.000
+##  1       76     2 1.000
+##  2       81     3 1.000
+##  3        6     9 1.000
+##  4       43     1 1.000
+##  5       95    10 1.000
+##  6       77     5 1.000
+##  7       29     3 1.000
+##  8       80     3 1.000
+##  9       57     4 1.000
+## 10       25     8 1.000
 ## # ℹ 990 more rows
 ```
 
@@ -343,6 +501,6 @@ lda_beta %>%
   theme_tufte(base_family = "Helvetica")
 ```
 
-<img src="06-week6demo_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="06-week6demo_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
-Which shows us the words associated with each topic, and the size of the associated $\beta$ coefficient. 
+Which shows us the words associated with each topic, and the size of the associated $\beta$ coefficient.

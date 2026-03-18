@@ -23,7 +23,7 @@ library(tidytext) # includes set of functions useful for manipulating text
 library(ggthemes) # to make your plots look nice
 library(text2vec) # for word embedding implementation
 library(widyr) # for reshaping the text data
-library(irlba) # for svd
+library(RSpectra) # for svd
 library(umap) # for dimensionality reduction
 ```
 
@@ -223,7 +223,7 @@ pmi_matrix <- normalized_prob %>%
 #remove missing data
 pmi_matrix@x[is.na(pmi_matrix@x)] <- 0
 #run SVD
-pmi_svd <- irlba(pmi_matrix, 256, maxit = 500)
+pmi_svd <- svds(pmi_matrix, 256)
 
 glimpse(pmi_matrix)
 ```
@@ -386,6 +386,7 @@ Let's first make sure we have loaded the packages we need:
 library(text2vec) # for implementation of GloVe algorithm
 library(stringr) # to handle text strings
 library(umap) # for dimensionality reduction later on
+library(RcppParallel) # for parallel processing
 ```
 
 ## Implementation

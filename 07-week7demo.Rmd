@@ -5,13 +5,17 @@
 First, we'll load the packages we'll be using in this week's brief demo. here we are pre-loading an already-estimated PMI matrix and results from the singular value decomposition approach.
 
 ```{r, warning = F, message = F}
-library(Matrix) #for handling matrices
+# we need to install some of these packages from source
+library(Matrix)
 library(tidyverse)
 library(tidytext)
-library(irlba) # for SVD
 library(umap) # for dimensionality reduction
 library(quanteda)
+library(RSpectra) # for singular value decomposition
+```
 
+
+```{r, warning = F, message = F}
 load("data/wordembed/pmi_svd.RData")
 load("data/wordembed/pmi_matrix.RData")
 ```
@@ -20,7 +24,7 @@ load("data/wordembed/pmi_matrix.RData")
 How does it work?
 
 - Various approaches, including:
-  - 1. SVD
+  - 1. Singular value decomposition (SVD) - a dimensionality reduction technique, but not as semantically sophisticated as the neural network-based techniques
   - 2. Neural network-based techniques like GloVe and Word2Vec
   
 In both approaches, we are:
@@ -40,27 +44,21 @@ The implementation of this technique using the singular value decomposition appr
 
 
 ```{r ,echo=F}
-
 head(pmi_matrix[1:6, 1:6])
-
 ```
 
 And the resulting matrix object will take the following format:
 
 ```{r ,echo=F}
-
 glimpse(pmi_matrix)
-
 ```
 
 We will then use the "Singular Value Decomposition" (SVD) techique. This is another multidimensional scaling technique, where the first axis of the resulting coordinates captures the most variance, the second the second-most etc...
 
 And to do this, we simply need to do the following.
 
-```{r, eval = F}
-
-pmi_svd <- irlba(pmi_matrix, 256, maxit = 500)
-
+```{r, eval = T}
+pmi_svd <- svds(pmi_matrix, 256)
 ```
 
 After which we can collect our vectors for each word and inspect them. 
@@ -217,7 +215,7 @@ Using this normalized probabilities, we then calculate the PMI or "Pointwise Mut
 
 We then cast our word pairs into a sparse matrix where values correspond to the PMI between two corresponding words. 
 
-```{r, eval=F}
+```{r}
 pmi_matrix <- normalized_prob %>%
     mutate(pmi = log10(p_together)) %>%
     cast_sparse(word1, word2, pmi)
@@ -225,12 +223,13 @@ pmi_matrix <- normalized_prob %>%
 #remove missing data
 pmi_matrix@x[is.na(pmi_matrix@x)] <- 0
 #run SVD
+```
 
-# There is a problem with the package 'irlba' and the updated version of 'Matrix'
-pmi_svd <- irlba::irlba(pmi_matrix, 256, maxit = 500)
 
-# downgrading the Matrix version of the package might help
-remotes::install_version("Matrix", version = "1.6-1.1")
-
+```{r}
+# Singular value decomposition
+# The irlba package had problem compiling on MAC OS so
+# switched from command irlba::irlba() to RSpectra::svds() 
+pmi_svd <- svds(pmi_matrix, 256)
 glimpse(pmi_matrix)
 ```
